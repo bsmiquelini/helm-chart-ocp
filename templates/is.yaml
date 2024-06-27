@@ -15,6 +15,7 @@ spec:
         kind: DockerImage
         name: {{ .Values.dockerRegistry }}/{{ .Values.projectName }}:latest
       importPolicy: {}
-      referencePolicy: {}
+      referencePolicy:
+        type: Source
 {{- end }}
 
