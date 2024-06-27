@@ -1,0 +1,22 @@
+{{- if .Values.enableRoute }}
+apiVersion: {{ .Values.apiVersions.route }}
+kind: Route
+metadata:
+  name: {{ include "project.name" . }}
+  namespace: {{ include "project.namespace" . }}
+  annotations:
+    {{- include "common.annotations" . | nindent 4 }}
+  labels:
+    app: {{ include "project.name" . }}
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+  host: {{ include "project.name" . }}-{{ include "project.namespace" . }}.{{ .Values.hostSuffix }}
+  to:
+    kind: Service
+    name: {{ include "project.name" . }}
+    weight: 100
+  port:
+    targetPort: {{ .Values.targetPort }}
+  wildcardPolicy: None
+{{- end }}
+

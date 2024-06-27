@@ -1,0 +1,64 @@
+{{- if .Values.enableDeployment }}
+apiVersion: {{ .Values.apiVersions.deploymentConfig }}
+kind: DeploymentConfig
+metadata:
+  name: {{ include "project.name" . | required "[-] Requer passar o namespace no values.yaml" }}
+  namespace: {{ include "project.namespace" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+  annotations:
+    {{- include "common.annotations" . | nindent 4 }}
+spec:
+  selector:
+    app: {{ include "project.name" . }}
+  replicas: {{ .Values.replicas.min }}
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - {{ include "project.name" . }}
+        from:
+          kind: ImageStreamTag
+          namespace: {{ include "project.namespace" . }}
+          name: '{{ include "project.name" . }}:latest'
+    - type: ConfigChange
+  template:
+    metadata:
+      labels:
+        app: {{ include "project.name" . }}
+      annotations:
+        {{- include "common.annotations" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ include "project.name" . }}
+          image: >-
+            {{ include "project.dockerRegistry" . }}/{{ include "project.namespace" . }}/{{ include "project.name" . }}:latest
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+          env:
+            {{- range .Values.environment }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}
+            {{- range .Values.secrets }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  key: {{ .secretKeyRef.key }}
+                  name: {{ .secretKeyRef.name }}
+            {{- end }}
+      nodeSelector:
+        {{- range $key, $value := .Values.nodeSelector }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+{{- end }}
+

@@ -1,0 +1,65 @@
+# Esse arquivo values.yaml contem os valores defaults e pode ser utilizado como referencia para suas aplicações
+# Adicionar o values.yaml no seu repositorio de aplicação, utilizando o seguinte padrão:
+#   charts/<env>/values.yaml
+#
+projectName: deploy
+namespace: ""
+dockerRegistry: default-route-openshift-image-registry.apps.btvnd2hmlocp04.ops.hom.corp.btb
+replicas:
+  min: 1
+  max: 2
+containerPort: 8080
+targetPort: 8080
+hostSuffix: apps.hom.corp.btb
+commonLabels: {}
+commonAnnotations: {}
+nodeSelector: {}
+
+resources:
+  limits:
+    cpu: 150m
+    memory: 256Mi
+  requests:
+    cpu: 20m
+    memory: 64Mi
+
+
+secrets:
+  - name: SECURITY_OAUTH2_USERNAME
+    secretKeyRef:
+      key: SECURITY_OAUTH2_USERNAME
+      name: username
+  - name: SECURITY_OAUTH2_PASSWORD
+    secretKeyRef:
+      key: SECURITY_OAUTH2_PASSWORD
+      name: pwd-api
+
+environment:
+  - name: API_HOST
+    value: 'http://corretora-business-corretora-seguros.apps.hom.corp.btb/corretora-seguros'
+  - name: GOOGLE_ANALYTICS
+    value: 'G-HNNEDM0VCW'
+  - name: PORTAL_DEALER_CORRETORA_URL
+    value: 'https://portaldealercorretorahml.bctoyota.com.br'
+  - name: SITE_INSTITUCIONAL_URL
+    value: 'https://institucionalhml.bctoyota.com.br'
+
+metrics:
+  cpu:
+    enabled: true
+    averageUtilization: 80
+  memory:
+    enabled: false
+    averageUtilization: 80
+
+enableHPA: true
+enableDeployment: true
+enableRoute: true
+enableService: true
+enableImageStream: true
+
+apiVersions:
+  hpa: autoscaling/v1
+  deploymentConfig: apps.openshift.io/v1
+  route: route.openshift.io/v1
+  service: v1

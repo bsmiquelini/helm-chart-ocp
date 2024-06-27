@@ -1,0 +1,6 @@
+apiVersion: v2
+name: deploy-btb
+description: Helm chart YAML desenvolvido para as necessidades do banco Toyota
+type: application
+version: 0.1.0
+appVersion: "1.0"
