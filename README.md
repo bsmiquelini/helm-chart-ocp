@@ -34,6 +34,8 @@ my-chart/
 - Helm instalado.
 - Acesso a um cluster OpenShift.
 - Azure DevOps configurado para clonar o repositório durante o pipeline.
+- Para adicionar na pipeline habilitar no `Agent Job` a opção para acessar o `AccessToken`
+- Desabilitar no projeto a restrição de limitar acesso a repositorios das pipelines de Releases
 
 ### Passos para Deploy
 
