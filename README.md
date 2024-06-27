@@ -179,7 +179,7 @@ steps:
 
 Este arquivo de pipeline realiza o clone do repositório, instala o Helm e executa o deploy da aplicação usando o Helm Chart e o arquivo `values.yaml` específico para o ambiente de homologação.
 
-## Conclusão
+Para facilitar os deploys, centralizar manifestos, flexibilizar funcionalidades e integrar com CI/CD, mantendo historico de releases no cluster, a utilização do Helm é muito importante.
 
-Este Helm Chart oferece uma maneira flexível e eficiente de gerenciar o deploy de aplicações em OpenShift, suportando uma ampla gama de configurações e personalizações. Ao seguir este guia, você poderá configurar e usar o chart para facilitar e automatizar o deploy de suas aplicações, integrando-se perfeitamente com pipelines de CI/CD no Azure DevOps.
-
+## Maintainers
+- **Bruno (YAMAN)**
