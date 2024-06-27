@@ -39,6 +39,17 @@ my-chart/
 
 ### Passos para Deploy
 
+*** Ajustar os manifestos atuais para suportar o Helm
+```
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: corretora-institucional
+    meta.helm.sh/release-namespace: corretora-seguros
+```
+
+
 1. **Clone o repositório no pipeline de release:**
 
    Configure seu pipeline no Azure DevOps para clonar este repositório. No seu arquivo de pipeline, adicione um passo para clonar o repositório.

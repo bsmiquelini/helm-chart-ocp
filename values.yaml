@@ -55,7 +55,7 @@ enableHPA: true
 enableDeployment: true
 enableRoute: true
 enableService: true
-enableImageStream: true
+enableImageStream: false
 
 apiVersions:
   hpa: autoscaling/v2
