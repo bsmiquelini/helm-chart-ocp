@@ -27,7 +27,6 @@ my-chart/
   └── ReadMe.md
 ```
 
-## Utilização
 
 ### Pré-requisitos
 
@@ -48,6 +47,22 @@ Script para criação automatica do Taskgroup
 Script para gerar o manifesto values.yaml do Helm
 - scripts/createHelm.sh
 
+
+Logar no servidor:
+
+ ```
+ssh@192.168.123.22 (BTVND2HMAGT001)
+```
+
+Entrar no diretorio de script:
+```
+cd /home/yaman/create-charts
+ ```
+
+Executar o script:
+```
+bash  create.sh -d corretora-institucional -n corretora-seguros -a "Corretora de Seguros" -b feature/atualizacao-versao-node
+```
 
 ### Passos para Deploy
 
