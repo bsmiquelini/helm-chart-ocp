@@ -37,6 +37,18 @@ my-chart/
 - Para adicionar na pipeline habilitar no `Agent Job` a opção para acessar o `AccessToken`
 - Desabilitar no projeto a restrição de limitar acesso a repositorios das pipelines de Releases
 
+### Scripts de Apoio
+
+TaskGroup que suporta o Helm
+- scripts/Deploy-Openshift-HELM.json
+
+Script para criação automatica do Taskgroup
+- scripts/createTaskGroup.sh
+
+Script para gerar o manifesto values.yaml do Helm
+- scripts/createHelm.sh
+
+
 ### Passos para Deploy
 
 *** Ajustar os manifestos atuais para suportar o Helm
