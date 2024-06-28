@@ -217,6 +217,9 @@ steps:
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 ```
 
+### Possiveis problemas
+- Ajuste da versão do nodeVersion na pipeline baseado na versão correspondente do azure-pipelines.yaml da branch de origem
+
 Este arquivo de pipeline realiza o clone do repositório, instala o Helm e executa o deploy da aplicação usando o Helm Chart e o arquivo `values.yaml` específico para o ambiente de homologação.
 
 Para facilitar os deploys, centralizar manifestos, flexibilizar funcionalidades e integrar com CI/CD, mantendo historico de releases no cluster, a utilização do Helm é muito importante.

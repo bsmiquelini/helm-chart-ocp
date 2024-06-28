@@ -119,21 +119,21 @@ fetch_dc_and_hpa() {
 patch_resources() {
     bar
     echo "[+] Fazendo patch das labels Helm no DC"
-    oc patch dc "$dc_name" -n "$namespace" --type=json -p='[{"op": "add", "path": "/metadata/labels/app.kubernetes.io~1managed-by", "value": "Helm"}]'
+    oc patch dc "$dc_name" -n "$namespace" --type=json -p='[{"op": "add", "path": "/metadata/labels", "value": {"app.kubernetes.io/managed-by": "Helm"}}]i'
     oc patch dc "$dc_name" -n "$namespace" --type=json -p="[{'op': 'add', 'path': '/metadata/annotations/meta.helm.sh~1release-name', 'value': '$dc_name'}]"
     oc patch dc "$dc_name" -n "$namespace" --type=json -p="[{'op': 'add', 'path': '/metadata/annotations/meta.helm.sh~1release-namespace', 'value': '$namespace'}]"
     bar
     echo "[+] Fazendo patch das labels Helm no HPA"
-    oc patch hpa "$dc_name" -n "$namespace" --type=json -p='[{"op": "add", "path": "/metadata/labels/app.kubernetes.io~1managed-by", "value": "Helm"}]'
+    oc patch hpa "$dc_name" -n "$namespace" --type=json -p='[{"op": "add", "path": "/metadata/labels", "value": {"app.kubernetes.io/managed-by": "Helm"}}]'
     oc patch hpa "$dc_name" -n "$namespace" --type=json -p="[{'op': 'add', 'path': '/metadata/annotations/meta.helm.sh~1release-name', 'value': '$dc_name'}]"
     oc patch hpa "$dc_name" -n "$namespace" --type=json -p="[{'op': 'add', 'path': '/metadata/annotations/meta.helm.sh~1release-namespace', 'value': '$namespace'}]"
     bar
     echo "[+] Fazendo patch das labels Helm no SVC"
-    oc patch svc "$dc_name" -n "$namespace" --type=json -p='[{"op": "add", "path": "/metadata/labels/app.kubernetes.io~1managed-by", "value": "Helm"}]'
+    oc patch svc "$dc_name" -n "$namespace" --type=json -p='[{"op": "add", "path": "/metadata/labels", "value": {"app.kubernetes.io/managed-by": "Helm"}}]'
     oc patch svc "$dc_name" -n "$namespace" --type=json -p="[{'op': 'add', 'path': '/metadata/annotations/meta.helm.sh~1release-name', 'value': '$dc_name'}]"
     oc patch svc "$dc_name" -n "$namespace" --type=json -p="[{'op': 'add', 'path': '/metadata/annotations/meta.helm.sh~1release-namespace', 'value': '$namespace'}]"
     echo "[+] Fazendo patch das labels Helm no ROUTE"
-    oc patch route "$dc_name" -n "$namespace" --type=json -p='[{"op": "add", "path": "/metadata/labels/app.kubernetes.io~1managed-by", "value": "Helm"}]'
+    oc patch route "$dc_name" -n "$namespace" --type=json -p='[{"op": "add", "path": "/metadata/labels", "value": {"app.kubernetes.io/managed-by": "Helm"}}]'
     oc patch route "$dc_name" -n "$namespace" --type=json -p="[{'op': 'add', 'path': '/metadata/annotations/meta.helm.sh~1release-name', 'value': '$dc_name'}]"
     oc patch route "$dc_name" -n "$namespace" --type=json -p="[{'op': 'add', 'path': '/metadata/annotations/meta.helm.sh~1release-namespace', 'value': '$namespace'}]"
 }
