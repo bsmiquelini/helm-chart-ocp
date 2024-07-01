@@ -47,7 +47,7 @@ spec:
           env:
             {{- range .Values.environment }}
             - name: {{ .name }}
-              value: {{ .value }}
+              value: {{ .value | quote }}
             {{- end }}
             {{- range .Values.secrets }}
             - name: {{ .name }}
