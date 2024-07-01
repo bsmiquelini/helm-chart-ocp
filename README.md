@@ -27,6 +27,10 @@ my-chart/
   └── ReadMe.md
 ```
 
+### TO DO
+- Documentação no Confluence
+- Documentação de como utilizar e habilitar recursos
+
 
 ### Pré-requisitos
 

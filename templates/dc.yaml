@@ -21,7 +21,7 @@ spec:
         from:
           kind: ImageStreamTag
           namespace: {{ include "project.namespace" . }}
-          name: '{{ include "project.name" . }}:latest'
+          name: '{{ default (include "project.name" .) .Values.imageStreamName }}:latest'
     - type: ConfigChange
   template:
     metadata:
