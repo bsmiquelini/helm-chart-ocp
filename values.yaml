@@ -3,7 +3,7 @@
 #   charts/<env>/values.yaml
 #
 projectName: deploy
-namespace: ""
+namespace: "ns"
 dockerRegistry: default-route-openshift-image-registry.apps.btvnd2hmlocp04.ops.hom.corp.btb
 replicas:
   min: 1
@@ -13,6 +13,28 @@ hostSuffix: apps.hom.corp.btb
 commonLabels: {}
 commonAnnotations: {}
 nodeSelector: {}
+
+livenessProbe:
+  enabled: true
+  #failureThreshold: 3
+  #path: /actuator/liveness
+  #port: 8080
+  #scheme: HTTP
+  #initialDelaySeconds: 50
+  #periodSeconds: 30
+  #successThreshold: 1
+  #timeoutSeconds: 30
+
+readinessProbe:
+  enabled: true
+  #failureThreshold: 3
+  #path: /actuator/readiness
+  #port: 8080
+  #scheme: HTTP
+  #initialDelaySeconds: 50
+  #periodSeconds: 30
+  #successThreshold: 1
+  #timeoutSeconds: 30
 
 resources:
   limits:
@@ -24,24 +46,24 @@ resources:
 
 
 secrets:
-  - name: SECURITY_OAUTH2_USERNAME
-    secretKeyRef:
-      key: SECURITY_OAUTH2_USERNAME
-      name: username
-  - name: SECURITY_OAUTH2_PASSWORD
-    secretKeyRef:
-      key: SECURITY_OAUTH2_PASSWORD
-      name: pwd-api
+#  - name: SECURITY_OAUTH2_USERNAME
+#  secretKeyRef:
+#      key: SECURITY_OAUTH2_USERNAME
+#      name: username
+#  - name: SECURITY_OAUTH2_PASSWORD
+#    secretKeyRef:
+#      key: SECURITY_OAUTH2_PASSWORD
+#      name: pwd-api
 
 environment:
-  - name: API_HOST
-    value: 'http://corretora-business-corretora-seguros.apps.hom.corp.btb/corretora-seguros'
-  - name: GOOGLE_ANALYTICS
-    value: 'G-HNNEDM0VCW'
-  - name: PORTAL_DEALER_CORRETORA_URL
-    value: 'https://portaldealercorretorahml.bctoyota.com.br'
-  - name: SITE_INSTITUCIONAL_URL
-    value: 'https://institucionalhml.bctoyota.com.br'
+#  - name: API_HOST
+#    value: 'http://corretora-business-corretora-seguros.apps.hom.corp.btb/corretora-seguros'
+#  - name: GOOGLE_ANALYTICS
+#    value: 'G-HNNEDM0VCW'
+#  - name: PORTAL_DEALER_CORRETORA_URL
+#    value: 'https://portaldealercorretorahml.bctoyota.com.br'
+#  - name: SITE_INSTITUCIONAL_URL
+#    value: 'https://institucionalhml.bctoyota.com.br'
 
 metrics:
   cpu:

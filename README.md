@@ -219,6 +219,9 @@ steps:
 
 ### Possiveis problemas
 - Ajuste da versão do nodeVersion na pipeline baseado na versão correspondente do azure-pipelines.yaml da branch de origem
+- Ajuste da service account do Nexus no taskgroup do Helm
+- Ajustar o arquivo azure-pipelines.yml para azure-pipelines.yaml
+
 
 Este arquivo de pipeline realiza o clone do repositório, instala o Helm e executa o deploy da aplicação usando o Helm Chart e o arquivo `values.yaml` específico para o ambiente de homologação.
 

@@ -56,6 +56,30 @@ spec:
                   key: {{ .secretKeyRef.key }}
                   name: {{ .secretKeyRef.name }}
             {{- end }}
+          livenessProbe:
+            {{- if .Values.livenessProbe.enabled }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold | default 3 }}
+            httpGet:
+              path: {{ .Values.livenessProbe.path | default "/actuator/liveness" }}
+              port: {{ .Values.livenessProbe.port | default .Values.containerPort }}
+              scheme: {{ .Values.livenessProbe.scheme | default "HTTP" }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 50 }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds | default 30 }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold | default 1 }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 30 }}
+            {{- end }}
+          readinessProbe:
+            {{- if .Values.readinessProbe.enabled }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
+            httpGet:
+              path: {{ .Values.readinessProbe.path | default "/actuator/readiness" }}
+              port: {{ .Values.readinessProbe.port | default .Values.containerPort }}
+              scheme: {{ .Values.readinessProbe.scheme | default "HTTP" }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 50 }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 30 }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold | default 1 }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 30 }}
+            {{- end }}
       nodeSelector:
         {{- range $key, $value := .Values.nodeSelector }}
         {{ $key }}: {{ $value | quote }}

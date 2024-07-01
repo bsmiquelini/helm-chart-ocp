@@ -1,0 +1,283 @@
+nomeProjeto,nomeRepositorio
+Encurtador URL,api-encurtador-url
+API Mocks,api_formalizacao-propostas-documentos-v1
+API Mocks,api-acl-v1
+API Mocks,api-analise-risco-credito-v1
+API Mocks,api-assessoria-cobranca-v1
+API Mocks,api-assessoria-prestacao-contas-v1
+API Mocks,api-assinatura-digital-v1
+API Mocks,api-boletos-parciais-v1
+API Mocks,api-boletos-v1
+API Mocks,api-calculo-ofertas-v1
+API Mocks,api-campanha-distribuicao-v1
+API Mocks,api-campanha-viva-mundo-v1
+API Mocks,api-campanha-welcome-v1
+API Mocks,api-catalogo-dados-abertos-bacen-v1
+API Mocks,api-cep-treinamento-v1
+API Mocks,api-cep-v1
+API Mocks,api-clientes-conectados-v1
+API Mocks,api-clientes-inadimplentes-v1
+API Mocks,api-clientes-produtos-v1
+API Mocks,api-clientes-v2
+API Mocks,api-clientes-v3
+API Mocks,api-consentimento-relacionamento-v1
+API Mocks,api-contas-a-pagar-v1
+API Mocks,api-contato-cliente-v1
+API Mocks,api-contratos-assessorias-v1
+API Mocks,api-contratos-teste
+API Mocks,api-controle-acesso-externo
+API Mocks,api-crivo-operacoes-v1
+API Mocks,api-dealers-v1
+API Mocks,api-documentos-gerais-v1
+API Mocks,api-documentos-v1
+API Mocks,api-docusign-v1
+API Mocks,api-email-ofertas-v1
+API Mocks,api-feedback-ofertas
+API Mocks,api-fichacadastral-domin-v1
+API Mocks,api-financiamentos-login-v1
+API Mocks,api-financiamentos-param-v1
+API Mocks,api-financiamentos-persi-v1
+API Mocks,api-financiamentos-propo-v1
+API Mocks,api-financ-notificacoes-v1
+API Mocks,api-firebase
+API Mocks,api-formalizacao-proposta-documentos-v1
+API Mocks,api-formalizacao-proposta-envio-v1
+API Mocks,api-infobank-v1
+API Mocks,api-origens-negocio-v1
+API Mocks,api-pilar3-dados-abertos-bacen-v1
+API Mocks,api-planos-v2
+API Mocks,api-proposta-dados-complementares-v1
+API Mocks,api-proposta-listagem-v1
+API Mocks,api-propostas-documentos-v1
+API Mocks,api-propostas-v1
+API Mocks,api-representante-legal-v1
+API Mocks,api-salesforce-busca-ofertas-v1
+API Mocks,api-salesforce-campaignmember-summary
+API Mocks,api-salesforce-consentimento
+API Mocks,api-salesforce-contatos-parceiros-v1
+API Mocks,api-salesforce-contrato-bloqueio-v1
+API Mocks,api-salesforce-dealers-v1
+API Mocks,api-salesforce-feedback-ofertas-v1
+API Mocks,api-salesforce-historico-ofertas-v1
+API Mocks,api-salesforce-lgpd-v1
+API Mocks,api-salesforce-ofertas-v3
+API Mocks,api-salesforce-seller-tasks
+API Mocks,api-salesforce-seller-tasks-v2
+API Mocks,api-seguro-v1
+API Mocks,api-simulador-v1
+API Mocks,api-tesouraria-v1
+API Mocks,api-toolbox-v1
+API Mocks,api-validacao-positiva-v1
+API Mocks,api-veiculos-v1
+Poc Weblogic,Poc Weblogic
+Connected Loan,api-fin-conectados
+Connected Loan,api-fin-conectados-teste
+Controle Externo,api-acoes
+Controle Externo,api-batch-usuarios
+Controle Externo,api-expurgos-log
+Controle Externo,api-funcionalidades
+Controle Externo,api-login
+Controle Externo,api-perfis
+Controle Externo,api-permissoes
+Controle Externo,api-relatorios
+Controle Externo,api-sistemas
+Controle Externo,api-usuarios
+Controle Externo,controle-externo
+Openshift,openshift-amq-streams
+Openshift,openshift-amq-streams-monitoring
+Openshift,openshift-cicd
+Openshift,openshift-cicd-app
+Openshift,openshift-operators
+Openshift,openshift-teste
+Corretora de Seguros,corretora-business
+Corretora de Seguros,corretora-institucional
+Portal de Seminovos,mobileseminovos
+Portal de Seminovos,portalseminovos
+Devops-Automation,Devops-Automation
+Sharepoint,api-sharepoint-docs
+Sharepoint,api-sharepoint-login
+SEGON - SISTEMA DE COTAÇÃO DE SEGUROS ONLINE,segon
+BTB,apache-ignite
+BTB,api-cestaservicos
+BTB,api-emplacamento
+BTB,api-expurgos
+BTB,api-farol-parametros
+BTB,api-fichacadastral-domin
+BTB,api-financiamentos-comp
+BTB,api-financiamentos-dias
+BTB,api-financiamentos-envio
+BTB,api-financiamentos-farol
+BTB,api-financiamentos-log
+BTB,api-financiamentos-login
+BTB,api-financiamentos-modelo
+BTB,api-financiamentos-param
+BTB,api-financiamentos-persi
+BTB,api-financiamentos-planos
+BTB,api-financiamentos-propo
+BTB,api-financiamentos-segur
+BTB,api-financiamentos-simul
+BTB,api-financ-notificacoes
+BTB,api-itens-financiaveis
+BTB,api-mensagens
+BTB,api-motor-taxas-planos
+BTB,api-notificacoes-credito
+BTB,api-origens-negocios
+BTB,api-planos-v2
+BTB,api-rating-factor
+BTB,api-rbp
+BTB,api-seguradoras
+BTB,api-tests
+BTB,api-toolbox
+BTB,api-veiculos
+BTB,api-veiculos.fere
+BTB,bat-dealers
+BTB,BTB
+BTB,calculadora
+BTB,data-corp
+BTB,data-corp-scripts
+BTB,devops-automation
+BTB,e2e-test-automation
+BTB,e2e-test-automation.romario.silva
+BTB,gitops
+BTB,log-extractor
+BTB,my-new-repository
+BTB,newfront
+BTB,poc-relatorios
+BTB,report-poc
+BTB,zookeeper-k8s-openshift
+Gestão de Despesas,Gestão de Despesas
+RISK BASE PRICE,rbp
+INATIVOS,AUTENTICADOR-LDAP
+INATIVOS,cadin
+INATIVOS,INATIVOS
+INATIVOS,lexus-b2c
+INATIVOS,sarc
+INATIVOS,simulador
+INATIVOS,SIMULADOR_DE_PROPOSTAS
+INATIVOS,swap
+INATIVOS,sweb
+Casos de Testes Automatizados,corretora-b2c
+Casos de Testes Automatizados,corretora-multicalculo
+Casos de Testes Automatizados,corretora-salesforce
+Casos de Testes Automatizados,corretora-seguroauto
+Casos de Testes Automatizados,corretora-ura
+Casos de Testes Automatizados,motor-de-taxas
+Casos de Testes Automatizados,qa-temp-btb
+Seguros,api-seguro-franquia
+Seguros,batch-seguro-franquia
+Contato Cliente,api-contato-cliente
+Contato Cliente,api-contato-cliente-envio
+SGSIM - SISTEMA GERENCIADOR DE SIMULADORES,sgsim
+SALESFORCE,salesforce
+ACL,acl
+ACL,aclws
+One by One,devops-automation
+One by One,one-by-one-consultor
+One by One,one-by-one-consultor-bus
+One by One,one-by-one-consultor-dat
+One by One,one-by-one-consultor-log
+CAD,cad
+CAD,cad-business
+TRANSBACEN - Comunicação com o Bacen via STA,transbacen
+Padrão de Arquitetura para Microserviços,Padrão de Arquitetura para Microserviços
+Assinatura Digital,api-assinatura-digital
+ECHECKLIST,echecklist
+SGRC - SISTEMA DE GRAVAMES E REGISTRO DE CONTRATO,sgrc
+BTBCI - CENTRAL DE INTEGRAÇÃO,btbci
+BTBCI - CENTRAL DE INTEGRAÇÃO,BTBCI - CENTRAL DE INTEGRAÇÃO
+Site Consórcio,site
+Clients de Sistemas e Serviços,Clients de Sistemas e Serviços
+Clients de Sistemas e Serviços,segurosonline-ws-client
+teste,api-emplacamento
+Seguro Proteção Financeira,api-seguro-protecao-fin
+Autbank,abacws
+Autbank,abbaws
+Autbank,abcaws
+Autbank,abcpws
+Autbank,abcvws
+Autbank,abibws
+Autbank,abtsws
+Autbank,ac
+Autbank,ae
+Autbank,ba
+Autbank,bn
+Autbank,ca
+Autbank,cb
+Autbank,cp
+Autbank,cv
+Autbank,cvws
+Autbank,dl
+Autbank,ib
+Autbank,il
+Autbank,is
+Autbank,lb
+Autbank,le
+Autbank,ov
+Autbank,pc
+Autbank,portal2ba
+Autbank,portal2bn
+Autbank,portal2cv
+Autbank,portal2dl
+Autbank,portal2pc
+Autbank,portal2sv
+Autbank,portal2tm
+Autbank,svr
+Autbank,tm
+Autbank,ts
+TOYOTA B2C,b2c
+SSO,sso
+SSO,ssosecurity
+PCONTABIL,pcontabil
+TOYOTA DBSLIGHT,toyotadbslight
+Viva o Mundo,api-pontuacao-vendedor
+Viva o Mundo,carga-pontuacao
+Viva o Mundo,vivamundo
+Viva o Mundo,vivamundo-business
+BWB - BOLETOWEB,boletoweb
+BWB - BOLETOWEB,bwb
+APM,APM
+QA - Automação,web-automation-cypress
+CATALOGO DE SERVIÇOS,cs
+Portal Corretora Seguros Dealer,api-autenticacao
+Portal Corretora Seguros Dealer,login
+Portal de Acesso BTB,api-login-business
+Portal de Acesso BTB,api-selecao-lojas
+Portal de Acesso BTB,login
+Portal de Acesso BTB,selecao-lojas
+Veracode,api-selecao-lojas-business
+Veracode,corretora-business
+Formalizacao de Propostas - Simply,api-documentos
+Formalizacao de Propostas - Simply,api-formalizacao-proposta-simply
+Formalizacao de Propostas - Simply,api-recebimento-notificacao-simply
+Formalizacao de Propostas - Simply,devops-automation
+Formalizacao de Propostas - Simply,tratador-notificacao-simply
+B2C,api-atendimento
+B2C,api-informativos
+B2C,b2c-business
+B2C,b2c-institucional
+B2C,btb-oauth
+B2C,devops-automation
+B2C,google-recaptcha
+B2C,simulacao-business
+B2C,smartsw-utils
+SGAT - SISTEMA DE GERAÇÃO DE ARQUIVOS POR TEMPLATE,sgat
+Gerador de Ofertas,api-calculo-ofertas
+Gerador de Ofertas,gerofer
+DOCSWEB - DOCUMENTOS WEB,docsweb
+GCB - GESTAO DE CORRESPONDENTE BANCARIO,gcb
+Devops-Corporativo,app-teste-pipeline
+Devops-Corporativo,app-teste-pipeline-container
+Devops-Corporativo,clean-agent
+Devops-Corporativo,create-repo
+Devops-Corporativo,deploy-weblogic
+Devops-Corporativo,GetMetricDataDevOps
+Devops-Corporativo,GetMetrics
+Devops-Corporativo,GetMetricsDockerlint
+Devops-Corporativo,GetMetricsGitleaks
+Devops-Corporativo,GetMetricsVeracode
+Devops-Corporativo,helm-charts
+Devops-Corporativo,salesforce-teste
+Devops-Corporativo,scripts-yaman
+Devops-Corporativo,templates-ci
+Devops-Corporativo,teste-dockerlint
+MENUDBSLIGHT,menudbslight
