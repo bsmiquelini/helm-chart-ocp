@@ -79,9 +79,16 @@ enableDeployment: true
 enableRoute: true
 enableService: true
 enableImageStream: false
+enablePVC: false
 
 apiVersions:
   hpa: autoscaling/v2
   deploymentConfig: apps.openshift.io/v1
   route: route.openshift.io/v1
   service: v1
+
+VolumePersistence:
+#  - name: pvc-name
+#    mountPath: /mnt/arquivos
+#    storageClassName: ocs-storagecluster-cephfs
+#    #volName: volume-5pcuk

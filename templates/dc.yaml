@@ -80,9 +80,21 @@ spec:
             successThreshold: {{ .Values.readinessProbe.successThreshold | default 1 }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 30 }}
             {{- end }}
+          {{- if .Values.enablePVC }}
+          volumeMounts:
+            {{- range .Values.VolumePersistence }}
+            - mountPath: {{ .mountPath | required "[-] Requer passar o mountPath no values.yaml" }}
+              name: {{ .volName | default .name | default (printf "volume-%s" (include "project.name" $)) }}
+            {{- end }}
+      volumes:
+        {{- range .Values.VolumePersistence }}
+        - name: {{ .volName | default .name | default (printf "volume-%s" (include "project.name" $)) }}
+          persistentVolumeClaim:
+            claimName: {{ .name | default (printf "pvc-%s" (include "project.name" $)) }}
+        {{- end }}
+        {{- end }}
       nodeSelector:
         {{- range $key, $value := .Values.nodeSelector }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}
 {{- end }}
-

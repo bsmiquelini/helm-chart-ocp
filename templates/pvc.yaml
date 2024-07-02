@@ -1,0 +1,21 @@
+{{- if .Values.enablePVC }}
+{{- range .Values.VolumePersistence }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name | default (printf "pvc-%s" (include "project.name" $)) }}
+  namespace: {{ include "project.namespace" $ }}
+  annotations:
+    {{- include "common.annotations" $ | nindent 4 }}
+  labels:
+    {{- include "common.labels" $ | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .accessMode | default "ReadWriteMany" }}
+  resources:
+    requests:
+      storage: {{ .size | default "1Gi" }}
+  storageClassName: {{ .storageClassName | default "standard" }}
+  volumeMode: {{ .volumeMode | default "Filesystem" }}
+{{- end }}
+{{- end }}

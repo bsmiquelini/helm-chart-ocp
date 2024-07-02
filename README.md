@@ -30,6 +30,7 @@ my-chart/
 ### TO DO
 - Documentação no Confluence
 - Documentação de como utilizar e habilitar recursos
+- Validar suporte a PVC
 
 
 ### Pré-requisitos
