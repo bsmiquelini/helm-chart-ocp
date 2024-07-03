@@ -106,7 +106,7 @@ emptyDir:
 #    mountPath: /data
 #
 strategy:
-#  type: Rolling
+  type: Rolling
 #  rollingParams:
 #    intervalSeconds: 1
 #    maxSurge: 50%

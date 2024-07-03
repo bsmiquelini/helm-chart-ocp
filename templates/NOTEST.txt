@@ -1,16 +1,3 @@
 ###########################################################
 ##             [*] Helm Chart YAMAN/TBT [*]              ##
 ###########################################################
-
-[+] Sua aplicação foi entregue com sucesso e exposta pelo service
-  AppName: '{{ .Values.projectName }}'
-  Namespace: {{ .Release.Namespace }}
-
-{{- if .Values.enableRoute }}
-[+] Rota habilitada para a aplicação '{{ .Values.projectName }}':
-  - http://{{ .Values.projectName }}-{{ .Values.namespace }}.{{ .Values.hostSuffix }}
-{{- else }}
-[+] Service interno da sua aplicação: '{{ .Values.projectName }}':
-    Port: {{ .Values.containerPort }}
-{{- end }}
-###########################################################
