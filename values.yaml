@@ -104,3 +104,12 @@ VolumePersistence:
 emptyDir:
 #  - name: redis-1
 #    mountPath: /data
+#
+strategy:
+#  type: Rolling
+#  rollingParams:
+#    intervalSeconds: 1
+#    maxSurge: 50%
+#    maxUnavailable: 50%
+#    timeoutSeconds: 6000
+#    updatePeriodSeconds: 1

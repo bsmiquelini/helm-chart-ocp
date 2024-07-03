@@ -12,6 +12,16 @@ spec:
   selector:
     app: {{ include "project.name" . }}
   replicas: {{ .Values.replicas.min }}
+  strategy:
+    type: {{ .Values.strategy.type | default "Rolling" }}
+    rollingParams:
+      {{- if .Values.strategy.rollingParams }}
+      intervalSeconds: {{ .Values.strategy.rollingParams.intervalSeconds | default 1 }}
+      maxSurge: {{ .Values.strategy.rollingParams.maxSurge | default "25%" }}
+      maxUnavailable: {{ .Values.strategy.rollingParams.maxUnavailable | default "25%" }}
+      timeoutSeconds: {{ .Values.strategy.rollingParams.timeoutSeconds | default 600 }}
+      updatePeriodSeconds: {{ .Values.strategy.rollingParams.updatePeriodSeconds | default 1 }}
+      {{- end }}
   triggers:
     - type: ImageChange
       imageChangeParams:
@@ -59,23 +69,30 @@ spec:
           livenessProbe:
             {{- if .Values.livenessProbe.enabled }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold | default 3 }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 50 }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds | default 30 }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold | default 1 }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 30 }}
             {{- if eq .Values.livenessProbe.type "exec" }}
             exec:
               command: {{ .Values.livenessProbe.command | toYaml | nindent 14 }}
+            {{- else if eq .Values.livenessProbe.type "tcpSocket" }}
+            tcpSocket:
+              port: {{ .Values.livenessProbe.port | default .Values.containerPort }}
             {{- else }}
             httpGet:
               path: {{ .Values.livenessProbe.path | default "/actuator/liveness" }}
               port: {{ .Values.livenessProbe.port | default .Values.containerPort }}
               scheme: {{ .Values.livenessProbe.scheme | default "HTTP" }}
             {{- end }}
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 50 }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds | default 30 }}
-            successThreshold: {{ .Values.livenessProbe.successThreshold | default 1 }}
-            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 30 }}
             {{- end }}
           readinessProbe:
             {{- if .Values.readinessProbe.enabled }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 50 }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 30 }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold | default 1 }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 30 }}
             {{- if eq .Values.readinessProbe.type "exec" }}
             exec:
               command: {{ .Values.readinessProbe.command | toYaml | nindent 14 }}
@@ -85,10 +102,6 @@ spec:
               port: {{ .Values.readinessProbe.port | default .Values.containerPort }}
               scheme: {{ .Values.readinessProbe.scheme | default "HTTP" }}
             {{- end }}
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 50 }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 30 }}
-            successThreshold: {{ .Values.readinessProbe.successThreshold | default 1 }}
-            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 30 }}
             {{- end }}
           {{- if .Values.enablePVC }}
           volumeMounts:
