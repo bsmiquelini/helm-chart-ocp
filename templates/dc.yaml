@@ -59,10 +59,15 @@ spec:
           livenessProbe:
             {{- if .Values.livenessProbe.enabled }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold | default 3 }}
+            {{- if eq .Values.livenessProbe.type "exec" }}
+            exec:
+              command: {{ .Values.livenessProbe.command | toYaml | nindent 14 }}
+            {{- else }}
             httpGet:
               path: {{ .Values.livenessProbe.path | default "/actuator/liveness" }}
               port: {{ .Values.livenessProbe.port | default .Values.containerPort }}
               scheme: {{ .Values.livenessProbe.scheme | default "HTTP" }}
+            {{- end }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 50 }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds | default 30 }}
             successThreshold: {{ .Values.livenessProbe.successThreshold | default 1 }}
@@ -71,10 +76,15 @@ spec:
           readinessProbe:
             {{- if .Values.readinessProbe.enabled }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
+            {{- if eq .Values.readinessProbe.type "exec" }}
+            exec:
+              command: {{ .Values.readinessProbe.command | toYaml | nindent 14 }}
+            {{- else }}
             httpGet:
               path: {{ .Values.readinessProbe.path | default "/actuator/readiness" }}
               port: {{ .Values.readinessProbe.port | default .Values.containerPort }}
               scheme: {{ .Values.readinessProbe.scheme | default "HTTP" }}
+            {{- end }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 50 }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 30 }}
             successThreshold: {{ .Values.readinessProbe.successThreshold | default 1 }}
@@ -86,11 +96,26 @@ spec:
             - mountPath: {{ .mountPath | required "[-] Requer passar o mountPath no values.yaml" }}
               name: {{ .volName | default .name | default (printf "volume-%s" (include "project.name" $)) }}
             {{- end }}
+          {{- end }}
+          {{- if .Values.enableEmptyDir }}
+          volumeMounts:
+            {{- range .Values.emptyDir }}
+            - mountPath: {{ .mountPath | required "[-] Requer passar o mountPath no values.yaml" }}
+              name: {{ .name | required "[-] Requer passar o name no values.yaml" }}
+            {{- end }}
+          {{- end }}
       volumes:
+        {{- if .Values.enablePVC }}
         {{- range .Values.VolumePersistence }}
         - name: {{ .volName | default .name | default (printf "volume-%s" (include "project.name" $)) }}
           persistentVolumeClaim:
             claimName: {{ .name | default (printf "pvc-%s" (include "project.name" $)) }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.enableEmptyDir }}
+        {{- range .Values.emptyDir }}
+        - name: {{ .name | required "[-] Requer passar o name no values.yaml" }}
+          emptyDir: {}
         {{- end }}
         {{- end }}
       nodeSelector:

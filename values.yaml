@@ -17,6 +17,8 @@ nodeSelector: {}
 
 livenessProbe:
   enabled: false
+  type: httpGet
+  #command: []
   #failureThreshold: 3
   #path: /actuator/liveness
   #port: 8080
@@ -27,7 +29,12 @@ livenessProbe:
   #timeoutSeconds: 30
 
 readinessProbe:
-  enabled: false
+  enabled: true
+  type: httpGet
+  # Baseado em comando....##
+  #type: exec
+  #command: ["/bin/sh", "-i", "-c", "echo 'Teste'" ]
+  ###########################
   #failureThreshold: 3
   #path: /actuator/readiness
   #port: 8080
@@ -44,7 +51,6 @@ resources:
   requests:
     cpu: 20m
     memory: 64Mi
-
 
 secrets:
 #  - name: SECURITY_OAUTH2_USERNAME
@@ -80,6 +86,7 @@ enableRoute: true
 enableService: true
 enableImageStream: false
 enablePVC: false
+enableEmptyDir: false
 
 apiVersions:
   hpa: autoscaling/v2
@@ -92,3 +99,8 @@ VolumePersistence:
 #    mountPath: /mnt/arquivos
 #    storageClassName: ocs-storagecluster-cephfs
 #    #volName: volume-5pcuk
+
+# Caso a aplicação use empty Dir
+emptyDir:
+#  - name: redis-1
+#    mountPath: /data
