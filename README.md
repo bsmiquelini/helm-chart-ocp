@@ -1,9 +1,9 @@
 
-# Helm Chart para Deploy de Aplicações em OpenShift criado pela YAMAN
+# Helm Chart para Deploy de Aplicações em OpenShift
 
 ## Introdução
 
-Este repositório contém um Helm Chart configurável para o deploy de aplicações em clusters OpenShift. O objetivo deste chart é facilitar o processo de deploy de aplicações, fornecendo uma estrutura flexível e reutilizável que pode ser clonada e utilizada em pipelines de CI/CD, especificamente no Azure DevOps. O chart suporta a configuração de vários recursos, como DeploymentConfig, HorizontalPodAutoscaler, Service e Route, permitindo uma personalização completa através de um arquivo `values.yaml`.
+Este repositório contém um Helm Chart configurável para o deploy de aplicações em clusters OpenShift. O objetivo deste chart é facilitar o processo de deploy de aplicações, fornecendo uma estrutura flexível e reutilizável que pode ser clonada e utilizada em pipelines de CI/CD, especificamente no Azure DevOps. O chart suporta a configuração de vários recursos, como DeploymentConfig, HorizontalPodAutoscaler, Service, Route, PersistentVolumeClaim, entre outros, permitindo uma personalização completa através do arquivo `values.yaml`.
 
 ## Estrutura do Repositório
 
@@ -18,110 +18,111 @@ my-chart/
   │   │   └── values.yaml
   ├── templates/
   │   ├── _helpers.tpl
-  │   ├── deployment.yaml
+  │   ├── dc.yaml
   │   ├── hpa.yaml
   │   ├── route.yaml
-  │   └── service.yaml
+  │   ├── service.yaml
+  │   ├── is.yaml
+  │   ├── pvc.yaml
+  ├── scripts/
+  │   ├── createTaskGroup.sh
+  │   ├── getRepos.sh
+  │   ├── createHelm.sh
+  │   └── Deploy-Openshift-HELM.json
+  ├── .git/
   ├── Chart.yaml
   ├── values.yaml
-  └── ReadMe.md
+  └── README.md
 ```
 
-### TO DO
-- Documentação no Confluence
-- Documentação de como utilizar e habilitar recursos
-- Validar suporte a PVC
-
-
-### Pré-requisitos
+## Pré-requisitos
 
 - Helm instalado.
 - Acesso a um cluster OpenShift.
 - Azure DevOps configurado para clonar o repositório durante o pipeline.
-- Para adicionar na pipeline habilitar no `Agent Job` a opção para acessar o `AccessToken`
-- Desabilitar no projeto a restrição de limitar acesso a repositorios das pipelines de Releases
+- Para adicionar na pipeline habilitar no `Agent Job` a opção para acessar o `AccessToken`.
+- Desabilitar no projeto a restrição de limitar acesso a repositorios das pipelines de Releases.
 
-### Scripts de Apoio
+## Scripts de Apoio
 
-TaskGroup que suporta o Helm
-- scripts/Deploy-Openshift-HELM.json
+### TaskGroup que suporta o Helm
+- `scripts/Deploy-Openshift-HELM.json`
 
-Script para criação automatica do Taskgroup
-- scripts/createTaskGroup.sh
+### Script para criação automática do Taskgroup
+- `scripts/createTaskGroup.sh`
 
-Script para gerar o manifesto values.yaml do Helm
-- scripts/createHelm.sh
+### Script para gerar o manifesto values.yaml do Helm
+- `scripts/createHelm.sh`
 
+### Logar no servidor:
 
-Logar no servidor:
-
- ```
+```sh
 ssh@192.168.123.22 (BTVND2HMAGT001)
 ```
 
-Entrar no diretorio de script:
-```
+### Entrar no diretório de script:
+
+```sh
 cd /home/yaman/create-charts
- ```
-
-Executar o script:
-```
-bash  create.sh -d corretora-institucional -n corretora-seguros -a "Corretora de Seguros" -b feature/atualizacao-versao-node
 ```
 
-### Passos para Deploy
+### Executar o script:
 
-*** Ajustar os manifestos atuais para suportar o Helm
-```
-metadata:
-  labels:
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-    meta.helm.sh/release-name: corretora-institucional
-    meta.helm.sh/release-namespace: corretora-seguros
+```sh
+bash create.sh -d corretora-institucional -n corretora-seguros -a "Corretora de Seguros" -b feature/atualizacao-versao-node
 ```
 
+## Valores Configuráveis
 
-1. **Clone o repositório no pipeline de release:**
-
-   Configure seu pipeline no Azure DevOps para clonar este repositório. No seu arquivo de pipeline, adicione um passo para clonar o repositório.
-
-   ```yaml
-   - script: git clone https://bancotoyota@dev.azure.com/bancotoyota/Devops-Corporativo/_git/helm-charts
-
-     displayName: 'Clonar repositório do Helm Chart'
-   ```
-
-2. **Configurar o `values.yaml` do ambiente:**
-
-   Dependendo do ambiente (hml ou prd), utilize o `values.yaml` correspondente que pode ser baseado  no values.yaml do repositorio de charts mencionado acima.
-
-   ```yaml
-   - script: helm upgrade --install $(Build.Repository.Name) ./helm-charts -f ./charts/$(Release.EnvironmentName)/values.yaml
-     displayName: 'Deploy HML'
-   ```
-
-   ```yaml
-   - script: helm upgrade --install $(Build.Repository.Name) ./my-chart -f ./charts/$(Release.EnvironmentName)/values.yaml
-     displayName: 'Deploy PRD'
-   ```
-
-### Configuração do `values.yaml`
-
-O arquivo `values.yaml` permite uma configuração detalhada e flexível. Aqui estão alguns dos valores configuráveis:
+O `values.yaml` fornece uma maneira de sobrescrever os valores padrão definidos no chart. Aqui estão alguns dos valores configuráveis importantes:
 
 ```yaml
-projectName: app-deploy
-namespace: ns
-dockerRegistry: registry # URL do registry do openshift
+# Esse arquivo values.yaml contem os valores defaults e pode ser utilizado como referencia para suas aplicações
+# Adicionar o values.yaml no seu repositorio de aplicação, utilizando o seguinte padrão:
+#   charts/<env>/values.yaml
+#
+projectName: deploy
+namespace: "ns"
+dockerRegistry: default-route-openshift-image-registry.apps.btvnd2hmlocp04.ops.hom.corp.btb
+#imageStreamName: 
 replicas:
   min: 1
-  max: 5
+  max: 2
 containerPort: 8080
-targetPort: 8080
-hostSuffix: example.com # Sulfixo do dominio que será utilizado
+hostSuffix: apps.hom.corp.btb
+commonLabels: {}
+commonAnnotations: {}
+nodeSelector: {}
 
-# Definição de limites e recursos solicitados pelo POD
+livenessProbe:
+  enabled: false
+  type: httpGet
+  #command: []
+  #failureThreshold: 3
+  #path: /actuator/liveness
+  #port: 8080
+  #scheme: HTTP
+  #initialDelaySeconds: 50
+  #periodSeconds: 30
+  #successThreshold: 1
+  #timeoutSeconds: 30
+
+readinessProbe:
+  enabled: true
+  type: httpGet
+  # Baseado em comando....##
+  #type: exec
+  #command: ["/bin/sh", "-i", "-c", "echo 'Teste'" ]
+  ###########################
+  #failureThreshold: 3
+  #path: /actuator/readiness
+  #port: 8080
+  #scheme: HTTP
+  #initialDelaySeconds: 50
+  #periodSeconds: 30
+  #successThreshold: 1
+  #timeoutSeconds: 30
+
 resources:
   limits:
     cpu: 150m
@@ -130,75 +131,136 @@ resources:
     cpu: 20m
     memory: 64Mi
 
-# Possibilita o uso de variavel de ambientes
-environment:
-  - name: API_HOST
-    value: 'http://corretora-business-corretora-seguros.apps.hom.corp.btb/corretora-seguros'
-
-# Possibilita o uso de secrets pré existentes como variavel de ambiente
 secrets:
-  - name: SECURITY_OAUTH2_USERNAME
-    secretKeyRef:
-      key: SECURITY_OAUTH2_USERNAME
-      name: username
+#  - name: SECURITY_OAUTH2_USERNAME
+#  secretKeyRef:
+#      key: SECURITY_OAUTH2_USERNAME
+#      name: username
+#  - name: SECURITY_OAUTH2_PASSWORD
+#    secretKeyRef:
+#      key: SECURITY_OAUTH2_PASSWORD
+#      name: pwd-api
 
-# Possibilita o uso de HPA
-# Quantidade minima e maxima dependerá da especificada no deploy e baseado no resoureces
+environment:
+#  - name: API_HOST
+#    value: 'http://corretora-business-corretora-seguros.apps.hom.corp.btb/corretora-seguros'
+#  - name: GOOGLE_ANALYTICS
+#    value: 'G-HNNEDM0VCW'
+#  - name: PORTAL_DEALER_CORRETORA_URL
+#    value: 'https://portaldealercorretorahml.bctoyota.com.br'
+#  - name: SITE_INSTITUCIONAL_URL
+#    value: 'https://institucionalhml.bctoyota.com.br'
+
 metrics:
   cpu:
     enabled: true
-    averageUtilization: 80 # Trigger
+    averageUtilization: 80
   memory:
     enabled: false
-    averageUtilization: 80 # Trigger
+    averageUtilization: 80
 
-# Toggles para habilitar ou não recursos
 enableHPA: true
 enableDeployment: true
 enableRoute: true
 enableService: true
+enableImageStream: false
+enablePVC: false
+enableEmptyDir: false
 
-# Possibilita sobrescrever API padrão nos manifestos
 apiVersions:
-  hpa: autoscaling/v1
+  hpa: autoscaling/v2
   deploymentConfig: apps.openshift.io/v1
   route: route.openshift.io/v1
   service: v1
 
-# Possibilita adicionar labels e annotações
-commonLabels: {}
-commonAnnotations: {}
+VolumePersistence:
+#  - name: pvc-name
+#    mountPath: /mnt/arquivos
+#    storageClassName: ocs-storagecluster-cephfs
+#    #volName: volume-5pcuk
 
-# Possibilita segregar o workload por selector
-nodeSelector: {}
-```
-
-### Recursos Suportados
-
-- **DeploymentConfig**: Garante que a aplicação seja implantada com a configuração desejada, permitindo escalabilidade e gerenciamento de imagens.
-- **HorizontalPodAutoscaler**: Ajusta automaticamente o número de pods em uma implantação com base na utilização de CPU e memória.
-- **Service**: Expõe a aplicação dentro do cluster e facilita a comunicação entre diferentes componentes.
-- **Route**: Expõe a aplicação externamente, permitindo o acesso via URL.
-
-### ImageStream no OpenShift
-
-Um `ImageStream` no OpenShift é uma forma de rastrear mudanças em uma imagem de contêiner. O `ImageStream` não contém a imagem em si, mas uma referência às imagens localizadas em um registro (interno ou externo). Quando uma nova imagem é adicionada ao `ImageStream`, as mudanças podem acionar novos builds ou deployments automaticamente, sendo que a cada push que é realizado e apontado para a tag lates (ou conforme configurada) será realizado um rollout dos pods.
-
-É necessario a cada helm upgrade ou deploy da aplicação, realizar um trigger no ImageStream:
-```
-oc tag image:latest openshift_registry/image:-$(Build.BuildId)
-
+# Caso a aplicação use empty Dir
+emptyDir:
+#  - name: redis-1
+#    mountPath: /data
+#
+strategy:
+#  type: Rolling
+#  rollingParams:
+#    intervalSeconds: 1
+#    maxSurge: 50%
+#    maxUnavailable: 50%
+#    timeoutSeconds: 6000
+#    updatePeriodSeconds: 1
 
 ```
-Para usar o imageStream é necessario habilitar o recurso `enableImageStream`
 
-### Benefícios do ImageStream
+## Templates Disponíveis
 
-- **Facilidade de Integração**: Integra facilmente com pipelines de CI/CD.
-- **Automatização**: Triggers automáticos para builds e deployments.
-- **Gerenciamento Centralizado**: Facilita o gerenciamento de imagens de contêiner em diferentes ambientes (desenvolvimento, homologação, produção).
+### Helpers (templates/_helpers.tpl)
 
-### Exemplo de Uso do Chart
+Este arquivo contém funções auxiliares que podem ser reutilizadas em outros templates. Por exemplo, a função `project.name` pode ser usada para obter o nome do projeto a partir dos valores fornecidos no `values.yaml`.
+
+### DeploymentConfig (templates/dc.yaml)
+
+O `dc.yaml` define o DeploymentConfig para a aplicação. Este template inclui a configuração dos contêineres, recursos, probes, entre outros.
+
+#### Possibilidades de Configuração:
+
+- **Replicas:** Número de réplicas para a aplicação.
+- **Triggers:** Configuração dos triggers para atualizações de imagem e mudanças de configuração.
+- **Containers:** Configuração dos contêineres, incluindo imagem, portas, recursos, variáveis de ambiente, e probes.
+- **NodeSelector:** Seletores de nó para agendamento dos pods.
+
+### Service (templates/svc.yaml)
+
+O `svc.yaml` define o serviço para a aplicação. Este template expõe a aplicação internamente no cluster.
+
+#### Possibilidades de Configuração:
+
+- **Ports:** Configuração das portas do serviço.
+- **Selectors:** Seletores para associar o serviço aos pods correspondentes.
+- **Type:** Tipo de serviço (ClusterIP, NodePort, LoadBalancer).
+
+### Route (templates/route.yaml)
+
+O `route.yaml` define a rota para a aplicação. Este template expõe a aplicação externamente.
+
+#### Possibilidades de Configuração:
+
+- **Host:** Hostname da rota.
+- **TLS:** Configuração de TLS para a rota.
+- **Path:** Caminho para a rota.
+
+### HorizontalPodAutoscaler (templates/hpa.yaml)
+
+O `hpa.yaml` define o HorizontalPodAutoscaler para a aplicação. Este template escala automaticamente a aplicação com base na utilização de CPU e memória.
+
+#### Possibilidades de Configuração:
+
+- **MinReplicas:** Número mínimo de réplicas.
+- **MaxReplicas:** Número máximo de réplicas.
+- **Metrics:** Métricas para escalonamento (CPU, memória).
+
+### PersistentVolumeClaim (templates/pvc.yaml)
+
+O `pvc.yaml` define o PersistentVolumeClaim para a aplicação. Este template solicita armazenamento persistente para os pods.
+
+#### Possibilidades de Configuração:
+
+- **AccessModes:** Modos de acesso (ReadWriteOnce, ReadOnlyMany, ReadWriteMany).
+- **Resources:** Requisições e limites de armazenamento.
+
+### ImageStream (templates/is.yaml)
+
+O `is.yaml` define o ImageStream para a aplicação. Este template gerencia as imagens de contêiner no OpenShift.
+
+#### Possibilidades de Configuração:
+
+- **Annotations:** Anotações para o ImageStream.
+- **Tags:** Tags para a imagem.
+
+## Exemplo de Uso do Chart
 
 Aqui está um exemplo de como você pode usar este chart em um pipeline de Azure DevOps:
 
@@ -222,15 +284,21 @@ steps:
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 ```
 
-### Possiveis problemas
-- Ajuste da versão do nodeVersion na pipeline baseado na versão correspondente do azure-pipelines.yaml da branch de origem
-- Ajuste da service account do Nexus no taskgroup do Helm
-- Ajustar o arquivo azure-pipelines.yml para azure-pipelines.yaml
-
-
 Este arquivo de pipeline realiza o clone do repositório, instala o Helm e executa o deploy da aplicação usando o Helm Chart e o arquivo `values.yaml` específico para o ambiente de homologação.
 
-Para facilitar os deploys, centralizar manifestos, flexibilizar funcionalidades e integrar com CI/CD, mantendo historico de releases no cluster, a utilização do Helm é muito importante.
+## Possíveis Problemas
+
+- Ajuste da versão do nodeVersion na pipeline baseado na versão correspondente do azure-pipelines.yaml da branch de origem.
+- Ajuste da service account do Nexus no taskgroup do Helm.
+- Ajustar o arquivo azure-pipelines.yml para azure-pipelines.yaml.
+
+## Benefícios do ImageStream
+
+- **Facilidade de Integração:** Integra facilmente com pipelines de CI/CD.
+- **Automatização:** Triggers automáticos para builds e deployments.
+- **Gerenciamento Centralizado:** Facilita o gerenciamento de imagens de contêiner em diferentes ambientes (desenvolvimento, homologação, produção).
 
 ## Maintainers
+
 - **Bruno (YAMAN)**
+
