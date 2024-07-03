@@ -6,13 +6,11 @@
   AppName: '{{ .Values.projectName }}'
   Namespace: {{ .Release.Namespace }}
 
-
-
 {{- if .Values.enableRoute }}
 [+] Rota habilitada para a aplicação '{{ .Values.projectName }}':
-  - http://{{ $.Values.projectName }}-{{ .Values.namespace }}.{{ .Values.hostSuffix }}
+  - http://{{ .Values.projectName }}-{{ .Values.namespace }}.{{ .Values.hostSuffix }}
 {{- else }}
 [+] Service interno da sua aplicação: '{{ .Values.projectName }}':
-    Port: {{ Values.containerPort }}
+    Port: {{ .Values.containerPort }}
 {{- end }}
 ###########################################################
