@@ -122,6 +122,18 @@ spec:
               name: {{ .name | required "[-] Requer passar o name no values.yaml" }}
             {{- end }}
           {{- end }}
+          securityContext:
+            {{- if .Values.securityContext.enabled }}
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            capabilities:
+              add: [ "ALL" ]
+            {{- else if .Values.securityContext.useRoot }}
+            runAsUser: 0
+            runAsGroup: 0
+            capabilities:
+              add: [ "ALL" ]
+            {{- end }}
       volumes:
         {{- if .Values.enablePVC }}
         {{- range .Values.VolumePersistence }}
