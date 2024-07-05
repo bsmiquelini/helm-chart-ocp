@@ -5,6 +5,11 @@ metadata:
   name: {{ include "project.name" . | required "[-] Requer passar o namespace no values.yaml" }}
   namespace: {{ include "project.namespace" . }}
   labels:
+    app.kubernetes.io/name: "{{ .Chart.Name }}"
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/version: "{{ .Chart.Version }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     {{- include "common.labels" . | nindent 4 }}
   annotations:
     {{- include "common.annotations" . | nindent 4 }}
