@@ -125,8 +125,8 @@ spec:
               name: {{ .name | required "[-] Requer passar o name no values.yaml" }}
             {{- end }}
           {{- end }}
+          {{- if .Values.securityContext.enabled }}
           securityContext:
-            {{- if .Values.securityContext.enabled }}
             runAsUser: {{ .Values.securityContext.runAsUser }}
             runAsGroup: {{ .Values.securityContext.runAsGroup }}
             capabilities:
@@ -136,7 +136,7 @@ spec:
             runAsGroup: 0
             capabilities:
               add: [ "ALL" ]
-            {{- end }}
+          {{- end }}
       volumes:
         {{- if .Values.enablePVC }}
         {{- range .Values.VolumePersistence }}
