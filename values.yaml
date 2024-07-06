@@ -14,7 +14,11 @@ hostSuffix: apps.hom.corp.btb
 commonLabels: {}
 commonAnnotations: {}
 nodeSelector: {}
-
+securityContext:
+  enabled: false
+  runAsUser: 1001
+  runAsGroup: 0
+  useRoot: true
 livenessProbe:
   enabled: false
   type: httpGet
