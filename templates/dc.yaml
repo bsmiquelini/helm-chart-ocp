@@ -45,6 +45,9 @@ spec:
       annotations:
         {{- include "common.annotations" . | nindent 8 }}
     spec:
+      {{- if .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- end }}
       containers:
         - name: {{ include "project.name" . }}
           image: >-
