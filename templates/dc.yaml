@@ -47,6 +47,7 @@ spec:
     spec:
       {{- if .Values.serviceAccountName }}
       serviceAccountName: {{ .Values.serviceAccountName }}
+      serviceAccount: {{ .Values.serviceAccountName }}
       {{- end }}
       containers:
         - name: {{ include "project.name" . }}
