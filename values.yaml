@@ -10,7 +10,7 @@ replicas:
   min: 1
   max: 2
 containerPort: 8080
-hostSuffix: apps.hom.corp.btb
+hostSuffix: apps.btvnd2hmlocp04.ops.hom.corp.btb
 commonLabels: {}
 commonAnnotations: {}
 nodeSelector: {}
