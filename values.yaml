@@ -33,7 +33,7 @@ livenessProbe:
   #timeoutSeconds: 30
 
 readinessProbe:
-  enabled: true
+  enabled: false
   type: httpGet
   # Baseado em comando....##
   #type: exec
