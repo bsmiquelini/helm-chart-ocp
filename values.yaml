@@ -117,3 +117,9 @@ strategy:
 #    maxUnavailable: 50%
 #    timeoutSeconds: 6000
 #    updatePeriodSeconds: 1
+
+securityContext:
+  enabled: false
+#  capabilities:
+#    add: ["NET_BIND_SERVICE"]
+
