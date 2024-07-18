@@ -49,6 +49,14 @@ spec:
       serviceAccountName: {{ .Values.serviceAccountName }}
       serviceAccount: {{ .Values.serviceAccountName }}
       {{- end }}
+      {{- if .Values.securityContext.enabled }}
+      securityContext:
+        capabilities:
+          add:
+            {{- range .Values.securityContext.capabilities.add }}
+            - {{ . }}
+            {{- end }}
+      {{- end }}
       containers:
         - name: {{ include "project.name" . }}
           image: >-
