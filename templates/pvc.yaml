@@ -15,7 +15,7 @@ spec:
   resources:
     requests:
       storage: {{ .size | default "1Gi" }}
-  storageClassName: {{ .storageClassName | default "standard" }}
+  storageClassName: {{ .storageClassName | default "ocs-storagecluster-cephfs" }}
   volumeMode: {{ .volumeMode | default "Filesystem" }}
 {{- end }}
 {{- end }}
