@@ -5,7 +5,7 @@
 projectName: deploy
 namespace: "ns"
 dockerRegistry: default-route-openshift-image-registry.apps.btvnd2hmlocp04.ops.hom.corp.btb
-#imageStreamName: 
+#imageStreamName: #Usar caso o imageStream seja diferente do nome de projectName
 replicas:
   min: 1
   max: 2
@@ -14,11 +14,6 @@ hostSuffix: apps.btvnd2hmlocp04.ops.hom.corp.btb
 commonLabels: {}
 commonAnnotations: {}
 nodeSelector: {}
-securityContext:
-  enabled: false
-  runAsUser: 1001
-  runAsGroup: 0
-  useRoot: true
 livenessProbe:
   enabled: false
   type: httpGet
@@ -58,7 +53,7 @@ resources:
 
 secrets:
 #  - name: SECURITY_OAUTH2_USERNAME
-#  secretKeyRef:
+#    secretKeyRef:
 #      key: SECURITY_OAUTH2_USERNAME
 #      name: username
 #  - name: SECURITY_OAUTH2_PASSWORD
@@ -67,14 +62,10 @@ secrets:
 #      name: pwd-api
 
 environment:
-#  - name: API_HOST
-#    value: 'http://corretora-business-corretora-seguros.apps.hom.corp.btb/corretora-seguros'
-#  - name: GOOGLE_ANALYTICS
-#    value: 'G-HNNEDM0VCW'
-#  - name: PORTAL_DEALER_CORRETORA_URL
-#    value: 'https://portaldealercorretorahml.bctoyota.com.br'
-#  - name: SITE_INSTITUCIONAL_URL
-#    value: 'https://institucionalhml.bctoyota.com.br'
+#  - name: TARGET_PORT
+#    value: '8080'
+#  - name: STAGE
+#    value: 'HML'
 
 metrics:
   cpu:
@@ -89,8 +80,6 @@ enableDeployment: true
 enableRoute: true
 enableService: true
 enableImageStream: false
-enablePVC: false
-enableEmptyDir: false
 
 apiVersions:
   hpa: autoscaling/v2
@@ -98,13 +87,22 @@ apiVersions:
   route: route.openshift.io/v1
   service: v1
 
+enablePVC: false
 VolumePersistence:
-#  - name: pvc-name
+# Valores de nome de volume e pvc padrão (projectName)
+#  - mountPath: /mnt/arquivos
+#    size: 128Mi
+# Definindo valores customizados
+#  - name: app-name # Nome do pvc
 #    mountPath: /mnt/arquivos
 #    storageClassName: ocs-storagecluster-cephfs
-#    #volName: volume-5pcuk
-
+#    volName: volume-5pcuk
+#    size: 1G
+#    volMode: Filesystem
+#    ReadWriteMany: ReadWriteMany
+#
 # Caso a aplicação use empty Dir
+enableEmptyDir: false
 emptyDir:
 #  - name: redis-1
 #    mountPath: /data

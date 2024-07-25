@@ -140,7 +140,7 @@ spec:
         {{- range .Values.VolumePersistence }}
         - name: {{ .volName | default .name | default (printf "volume-%s" (include "project.name" $)) }}
           persistentVolumeClaim:
-            claimName: {{ .name | default (printf "pvc-%s" (include "project.name" $)) }}
+            claimName: {{ .name | default $.Values.projectName }}
         {{- end }}
         {{- end }}
         {{- if .Values.enableEmptyDir }}
