@@ -53,7 +53,7 @@ spec:
       containers:
         - name: {{ include "project.name" . }}
           image: >-
-            {{ include "project.dockerRegistry" . }}/{{ include "project.namespace" . }}/{{ include "project.name" . }}:latest
+            {{ .Values.image.registry }}/{{ .Values.namespace }}/{{ include "project.name" . }}:{{ .Values.image.tag }}
           ports:
             - containerPort: {{ .Values.containerPort }}
               protocol: TCP
