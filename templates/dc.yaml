@@ -1,6 +1,10 @@
 {{- if .Values.enableDeployment }}
-apiVersion: {{ .Values.apiVersions.deploymentConfig }}
+apiVersion: {{ .Values.apiVersions.deploymentConfig | quote }}
+{{- if eq .Values.apiVersions.deploymentConfig "apps/v1" }}
+kind: Deployment
+{{- else }}
 kind: DeploymentConfig
+{{- end }}
 metadata:
   name: {{ include "project.name" . | required "[-] Requer passar o namespace no values.yaml" }}
   namespace: {{ include "project.namespace" . }}
@@ -15,11 +19,19 @@ metadata:
   annotations:
     {{- include "common.annotations" . | nindent 4 }}
 spec:
-  selector:
+  {{- if eq .Values.apiVersions.deploymentConfig "apps/v1" }}
+  matchLabels:
     app: {{ include "project.name" . }}
+  {{- else }}
+  app: {{ include "project.name" . }}
+  {{- end }}
   replicas: {{ .Values.replicas.min }}
   strategy:
+    {{- if eq .Values.apiVersions.deploymentConfig "apps/v1" }}
+    type: RollingUpdate
+    {{- else }}
     type: {{ .Values.strategy.type | default "Rolling" }}
+    {{- end }}
     rollingParams:
       {{- if .Values.strategy.rollingParams }}
       intervalSeconds: {{ .Values.strategy.rollingParams.intervalSeconds | default 1 }}
@@ -28,6 +40,8 @@ spec:
       timeoutSeconds: {{ .Values.strategy.rollingParams.timeoutSeconds | default 600 }}
       updatePeriodSeconds: {{ .Values.strategy.rollingParams.updatePeriodSeconds | default 1 }}
       {{- end }}
+  triggers:
+  {{- if eq .Values.apiVersions.deploymentConfig "apps.openshift.io/v1" }}
   triggers:
     - type: ImageChange
       imageChangeParams:
@@ -39,6 +53,7 @@ spec:
           namespace: {{ include "project.namespace" . }}
           name: '{{ default (include "project.name" .) .Values.imageStreamName }}:latest'
     - type: ConfigChange
+  {{- end }}
   template:
     metadata:
       labels:
