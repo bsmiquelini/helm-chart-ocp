@@ -86,7 +86,8 @@ enableImageStream: false
 
 apiVersions:
   hpa: autoscaling/v2
-  deploymentConfig: apps.openshift.io/v1
+  deploymentConfig: apps.openshift.io/v1 # DeploymentConfig
+  #deploymentConfig: apps/v1 # Deployment <<< Adcionar essa opção no manifesto da aplicação
   route: route.openshift.io/v1
   service: v1
 
