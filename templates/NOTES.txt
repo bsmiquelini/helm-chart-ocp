@@ -1,0 +1,37 @@
+
+###########################################################
+##	 	[*] Helm Chart [*]		 ##
+###########################################################
+
+{{- if .Values.service.type }}
+
+[+] Sua aplicação foi entregue com sucesso e exposta pelo service
+  AppName: '{{ .Values.appName }}' <<<
+  Namespace: {{ .Release.Namespace }}
+
+{{ .Values.appName }}
+  ServiceType: {{ .Values.service.type }}
+{{- range .Values.service.ports }}
+  - Name: {{ .name }} 
+    Port: {{ .port }}
+    Protocol: {{ .protocol }}
+    TargetPort: {{ .targetPort }}
+{{- end }}
+
+{{- end }}
+{{- if .Values.ingress.enabled }}
+[+] Ingress disponivel para a sua aplicação: '{{ .Values.appName }}':
+{{- range .Values.ingress.hosts }}
+  - http://{{ .host }} <<<
+{{- end }}
+{{- else if .Values.route.enabled }}
+[+] Rota habilitada para a aplicação '{{ .Values.appName }}':
+  - http://{{ .Values.route.host }} <<<
+{{- else }}
+
+[+] Service interno da sua aplicação: '{{ .Values.appName }}':
+{{- range .Values.service.ports }}
+  - {{ $.Values.appName }}:{{ .port }} <<<
+{{- end }}
+{{- end }}
+###########################################################
