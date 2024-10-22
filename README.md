@@ -51,26 +51,6 @@ my-chart/
 ### Script para criação automática do Taskgroup
 - `scripts/createTaskGroup.sh`
 
-### Script para gerar o manifesto values.yaml do Helm
-- `scripts/createHelm.sh`
-
-### Logar no servidor:
-
-```sh
-ssh@192.168.123.22 (BTVND2HMAGT001)
-```
-
-### Entrar no diretório de script:
-
-```sh
-cd /home/yaman/create-charts
-```
-
-### Executar o script:
-
-```sh
-bash create.sh -d corretora-institucional -n corretora-seguros -a "Corretora de Seguros" -b feature/atualizacao-versao-node
-```
 
 ## Valores Configuráveis
 
