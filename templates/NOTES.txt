@@ -1,37 +1,138 @@
+####################################################################
+##                 [🔄] Helm Chart [🔄]                ##
+####################################################################
 
-###########################################################
-##	 	[*] Helm Chart [*]		 ##
-###########################################################
-
-{{- if .Values.service.type }}
-
-[+] Sua aplicação foi entregue com sucesso e exposta pelo service
-  AppName: '{{ .Values.appName }}' <<<
-  Namespace: {{ .Release.Namespace }}
-
-{{ .Values.appName }}
-  ServiceType: {{ .Values.service.type }}
-{{- range .Values.service.ports }}
-  - Name: {{ .name }} 
-    Port: {{ .port }}
-    Protocol: {{ .protocol }}
-    TargetPort: {{ .targetPort }}
+{{- $projectName := include "project.name" . }}
+{{- $releaseName := .Release.Name }}
+{{- $namespace := include "project.namespace" . }}
+{{- $servicePort := .Values.containerPort }}
+{{- $routeEnabled := .Values.enableRoute | default false }}
+{{- $hpaEnabled := .Values.enableHPA | default false }}
+{{- $pvcEnabled := .Values.enablePVC | default false }}
+{{- $replicaCount := .Values.replicas.min }}
+{{- $hostSuffix := .Values.hostSuffix }}
+{{- $deploymentType := "DeploymentConfig" }}
+{{- if eq .Values.apiVersions.deploymentConfig "apps/v1" }}
+  {{- $deploymentType = "Deployment" }}
 {{- end }}
 
+___________________________________________________________________
+🚀  🚀  🚀  🚀  🚀  🚀  🚀  🚀  🚀  🚀  🚀  🚀  🚀  🚀  🚀  
+🔷 Informações de Implantação:
+🔹 Nome do Projeto: {{ $projectName }}
+🔹 Nome da Release: {{ $releaseName }}
+🔹 Namespace: {{ $namespace }}
+🔹 Tipo de Deployment: {{ $deploymentType }}
+🔹 Número de réplicas: {{ $replicaCount }}
+
+___________________________________________________________________
+🔷 Serviço:
+{{- if .Values.enableService }}
+  ✅ Service habilitado na porta: {{ $servicePort }} 
+  🔹 URL interna: 
+  http://{{ $projectName }}.{{ $namespace }}.svc:{{ $servicePort }}
+{{ else }}
+  ⚠️ Service: Não habilitado !!!
 {{- end }}
-{{- if .Values.ingress.enabled }}
-[+] Ingress disponivel para a sua aplicação: '{{ .Values.appName }}':
-{{- range .Values.ingress.hosts }}
-  - http://{{ .host }} <<<
+
+___________________________________________________________________
+{{- if $routeEnabled }}
+🔷 Rota:
+  ✅ URL do Route (externo): 
+  http://{{ $projectName }}-{{ $namespace }}.{{ $hostSuffix }}
 {{- end }}
-{{- else if .Values.route.enabled }}
-[+] Rota habilitada para a aplicação '{{ .Values.appName }}':
-  - http://{{ .Values.route.host }} <<<
+
+___________________________________________________________________
+🔷 Configuração de Auto Scaling (HPA):
+{{- if $hpaEnabled }}
+  ✅ HPA habilitado:
+  🔹 Mínimo de réplicas: {{ .Values.replicas.min }}
+  🔹 Máximo de réplicas: {{ .Values.replicas.max }}
+  🔹 Scale por métricas:
+    {{- if .Values.metrics.cpu.enabled }}
+    🔹 CPU Utilization: {{ .Values.metrics.cpu.averageUtilization | default 80 }}%
+    {{- end }}
+    {{- if .Values.metrics.memory.enabled }}
+    🔹 Memory Utilization: {{ .Values.metrics.memory.averageUtilization | default 80 }}%
+    {{- end }}
 {{- else }}
-
-[+] Service interno da sua aplicação: '{{ .Values.appName }}':
-{{- range .Values.service.ports }}
-  - {{ $.Values.appName }}:{{ .port }} <<<
+  ⚠️ HPA: Não habilitado !!!
 {{- end }}
+
+___________________________________________________________________
+🔷 Volumes Persistentes (PV e PVC):
+{{- if $pvcEnabled }}
+  ✅ PVC habilitado:
+{{- range .Values.VolumePersistence }}
+  🔹 Nome do PVC: {{ .name | default $.Values.projectName }}
+  🔹 Tamanho: {{ .size | default "1Gi" }}
+  🔹 Modo de acesso: {{ .accessMode | default "ReadWriteMany" }}
+  🔹 Classe de armazenamento: {{ .storageClassName | default "ocs-storagecluster-cephfs" }}
+{{- end }}
+{{- else }}
+  ⚠️ PVC: Não habilitado
+{{- end }}
+
+___________________________________________________________________
+🔷 Probes:
+{{- if .Values.livenessProbe.enabled }}
+  ✅ Liveness Probe URI: http://{{ $projectName }}.{{ $namespace }}.svc:{{ .Values.livenessProbe.port | default $servicePort }}{{ .Values.livenessProbe.path | default "/actuator/liveness" }}
+{{- else }}
+  ⚠️ Liveness Probe: Não configurado !!!
+{{- end }}
+
+{{- if .Values.readinessProbe.enabled }}
+  ✅ Readiness Probe URI: http://{{ $projectName }}.{{ $namespace }}.svc:{{ .Values.readinessProbe.port | default $servicePort }}{{ .Values.readinessProbe.path | default "/actuator/readiness" }}
+{{- else }}
+  ⚠️ Readiness Probe: Não configurado !!!
+{{- end }}
+
+___________________________________________________________________
+🔷 RECOMENDAÇÕES: 📝 
+{{- $recommendationFound := false }}  
+
+{{- if not .Values.livenessProbe.enabled }}
+  🔄 Recomenda-se configurar o Liveness Probe para monitorar se o container está em um estado válido. Exemplo de configuração ⚠️:
+```
+livenessProbe:
+  httpGet:
+    path: /actuator/liveness
+    port: {{ $servicePort }}
+  initialDelaySeconds: 50
+  timeoutSeconds: 3
+```
+  {{- $recommendationFound = true }}
+{{- end }}
+
+{{- if not .Values.readinessProbe.enabled }}
+  🔄 Recomenda-se configurar o Readiness Probe para verificar se o container está pronto para receber tráfego. Exemplo de configuração ⚠️:
+```
+readinessProbe:
+  httpGet:
+    path: /actuator/readiness
+    port: {{ $servicePort }}
+  initialDelaySeconds: 50
+  timeoutSeconds: 3
+```
+  {{- $recommendationFound = true }}
+{{- end }}
+
+{{- if eq .Values.apiVersions.deploymentConfig "apps.openshift.io/v1" }}
+  🔄 O recurso DeploymentConfig está sendo depreciado. Por favor, considere a migração para o apps/v1 no arquivo values.yaml ⚠️:
+```
+apiVersions:
+  deploymentConfig: apps/v1
+```
+  {{- $recommendationFound = true }}
+{{- end }}
+
+{{- if not $recommendationFound }}
+  ✅ Tudo está configurado corretamente para o deploy. Nenhuma recomendação necessária. 😊☀️
+{{- else }}
+  ⚠️ Voce tem recomendações para aplicar na sua definição de charts. 🤔🌧
+     Duvidas❓, verificar a documentação: 
+      📝 https:// 📝
 {{- end }}
 ###########################################################
+🏁  🏁  🏁  🏁  🏁  🏁  🏁  🏁  🏁  🏁  🏁  🏁  🏁    
+
