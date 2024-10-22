@@ -83,13 +83,13 @@ O `values.yaml` fornece uma maneira de sobrescrever os valores padrão definidos
 #
 projectName: deploy
 namespace: "ns"
-dockerRegistry: default-route-openshift-image-registry.apps.btvnd2hmlocp04.ops.hom.corp.btb
+dockerRegistry: default-route-openshift-image-registry.apps.teste.com.br
 #imageStreamName: 
 replicas:
   min: 1
   max: 2
 containerPort: 8080
-hostSuffix: apps.hom.corp.btb
+hostSuffix: apps.teste.com.br
 commonLabels: {}
 commonAnnotations: {}
 nodeSelector: {}
@@ -143,13 +143,7 @@ secrets:
 
 environment:
 #  - name: API_HOST
-#    value: 'http://corretora-business-corretora-seguros.apps.hom.corp.btb/corretora-seguros'
-#  - name: GOOGLE_ANALYTICS
-#    value: 'G-HNNEDM0VCW'
-#  - name: PORTAL_DEALER_CORRETORA_URL
-#    value: 'https://portaldealercorretorahml.bctoyota.com.br'
-#  - name: SITE_INSTITUCIONAL_URL
-#    value: 'https://institucionalhml.bctoyota.com.br'
+#    value: 'http://teste.com
 
 metrics:
   cpu:
