@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ORGANIZATION="bancotoyota"
+ORGANIZATION=""
 PAT=$az_tkn
 
 OUTPUT_FILE="repositorios.csv"

@@ -4,7 +4,7 @@
 #
 projectName: deploy
 namespace: "ns"
-dockerRegistry: default-route-openshift-image-registry.apps.btvnd2hmlocp04.ops.hom.corp.btb
+dockerRegistry: default-route-openshift-image-registry.apps.teste.com.br
 #imageStreamName: #Usar caso o imageStream seja diferente do nome de projectName
 image:
   registry: image-registry.openshift-image-registry.svc:5000
@@ -13,7 +13,7 @@ replicas:
   min: 1
   max: 2
 containerPort: 8080
-hostSuffix: apps.btvnd2hmlocp04.ops.hom.corp.btb
+hostSuffix: apps.teste.com.br
 commonLabels: {}
 commonAnnotations: {}
 nodeSelector: {}
